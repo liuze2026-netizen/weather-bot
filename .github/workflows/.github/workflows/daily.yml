@@ -1,0 +1,24 @@
+name: Daily Weather Push
+on:
+  schedule:
+    - cron: '30 13 * * *'  # UTC 13:30 = 北京时间 21:30，可自行修改
+  workflow_dispatch:        # 允许在网页上手动点击测试
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: python main.py
+        env:
+          WX_APPID: ${{ secrets.WX_APPID }}
+          WX_SECRET: ${{ secrets.WX_SECRET }}
+          WX_USERID: ${{ secrets.WX_USERID }}
+          WX_TEMPLATE_ID: ${{ secrets.WX_TEMPLATE_ID }}
+          CITY_LAT: ${{ secrets.CITY_LAT }}
+          CITY_LON: ${{ secrets.CITY_LON }}
+          LOVE_DATE: ${{ secrets.LOVE_DATE }}
